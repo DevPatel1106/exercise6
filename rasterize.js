@@ -180,44 +180,28 @@ function setupShaders() {
 function renderTriangles() {
 
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
     inputTriangles[0].mMatrix = mat4.create();
-
     var setCenter = vec3.fromValues(.25, .75, 0);
-
     mat4.fromTranslation(
         inputTriangles[0].mMatrix,
         vec3.negate(vec3.create(), setCenter)
     );
-
     mat4.multiply(
         inputTriangles[0].mMatrix,
         mat4.fromScaling(
             mat4.create(),
-            vec3.fromValues(.5, .5, 1)
+            vec3.fromValues(1.40625, 0.9375, 1)
         ),
         inputTriangles[0].mMatrix
     );
-
-    mat4.multiply(
-        inputTriangles[0].mMatrix,
-        mat4.fromRotation(
-            mat4.create(),
-            Math.PI / 4,
-            vec3.fromValues(0, 0, 1)
-        ),
-        inputTriangles[0].mMatrix
-    );
-
     mat4.multiply(
         inputTriangles[0].mMatrix,
         mat4.fromTranslation(
             mat4.create(),
-            vec3.fromValues(.1425, .3925, 0)
+            vec3.fromValues(-0.71875, -0.21875, 0)
         ),
         inputTriangles[0].mMatrix
     );
-
 
     inputTriangles[1].mMatrix = mat4.create();
 
@@ -237,11 +221,12 @@ function renderTriangles() {
         ),
         inputTriangles[1].mMatrix
     );
+
     mat4.multiply(
         inputTriangles[1].mMatrix,
         mat4.fromTranslation(
             mat4.create(),
-            vec3.fromValues(.375, .25, 0)
+            vec3.fromValues(-0.25, -0.50, 0)
         ),
         inputTriangles[1].mMatrix
     );
@@ -249,7 +234,6 @@ function renderTriangles() {
     for (var whichTriSet = 0;
          whichTriSet < numTriangleSets;
          whichTriSet++) {
-
         gl.uniformMatrix4fv(
             modelMatrixULoc,
             false,
@@ -281,8 +265,8 @@ function renderTriangles() {
             gl.UNSIGNED_SHORT,
             0
         );
-    }
-}
+    } 
+} 
 
 /* MAIN -- HERE is where execution begins after window load */
 
