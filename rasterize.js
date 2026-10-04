@@ -183,15 +183,12 @@ function renderTriangles() {
 
     inputTriangles[0].mMatrix = mat4.create();
 
-    var triangleCenter = vec3.fromValues(0.25, 0.70, 0);
-
-    var triangleTarget = vec3.fromValues(0.1425, 0.3925, 0);
+    var triangleCenter = vec3.fromValues(0.25, 0.75, 0);
 
     mat4.fromTranslation(
         inputTriangles[0].mMatrix,
         vec3.negate(vec3.create(), triangleCenter)
     );
-
     mat4.multiply(
         inputTriangles[0].mMatrix,
         mat4.fromScaling(
@@ -205,7 +202,7 @@ function renderTriangles() {
         inputTriangles[0].mMatrix,
         mat4.fromRotation(
             mat4.create(),
-            -Math.PI / 4,
+            Math.PI / 4,
             vec3.fromValues(0, 0, 1)
         ),
         inputTriangles[0].mMatrix
@@ -215,7 +212,7 @@ function renderTriangles() {
         inputTriangles[0].mMatrix,
         mat4.fromTranslation(
             mat4.create(),
-            triangleTarget
+            vec3.fromValues(0.1425, 0.3925, 0)
         ),
         inputTriangles[0].mMatrix
     );
@@ -224,8 +221,6 @@ function renderTriangles() {
     inputTriangles[1].mMatrix = mat4.create();
 
     var squareCenter = vec3.fromValues(0.25, 0.25, 0);
-
-    var squareTarget = vec3.fromValues(0.375, 0.25, 0);
 
     mat4.fromTranslation(
         inputTriangles[1].mMatrix,
@@ -240,11 +235,12 @@ function renderTriangles() {
         ),
         inputTriangles[1].mMatrix
     );
+
     mat4.multiply(
         inputTriangles[1].mMatrix,
         mat4.fromTranslation(
             mat4.create(),
-            squareTarget
+            vec3.fromValues(0.375, 0.25, 0)
         ),
         inputTriangles[1].mMatrix
     );
@@ -286,7 +282,6 @@ function renderTriangles() {
         );
     }
 }
-
 
 /* MAIN -- HERE is where execution begins after window load */
 
