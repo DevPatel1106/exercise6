@@ -181,11 +181,26 @@ function renderTriangles() {
 
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     inputTriangles[0].mMatrix = mat4.create();
-    var setCenter = vec3.fromValues(.25, .75, 0);
+
+    // Move triangle center to origin
+    var triangleCenter = vec3.fromValues(0.25, 0.75, 0);
     mat4.fromTranslation(
         inputTriangles[0].mMatrix,
-        vec3.negate(vec3.create(), setCenter)
+        vec3.fromValues(-0.25, -0.75, 0)
     );
+
+    //Rotate triangle clockwise 90 degrees
+    mat4.multiply(
+        inputTriangles[0].mMatrix,
+        mat4.fromRotation(
+            mat4.create(),
+            -Math.PI / 2,
+            vec3.fromValues(0, 0, 1)
+        ),
+        inputTriangles[0].mMatrix
+    );
+
+    //Scale triangle
     mat4.multiply(
         inputTriangles[0].mMatrix,
         mat4.fromScaling(
@@ -194,24 +209,26 @@ function renderTriangles() {
         ),
         inputTriangles[0].mMatrix
     );
+
+    //Move triangle to final position
     mat4.multiply(
         inputTriangles[0].mMatrix,
         mat4.fromTranslation(
             mat4.create(),
-            vec3.fromValues(-0.71875, -0.21875, 0)
+            vec3.fromValues(-0.72, -0.22, 0)
         ),
         inputTriangles[0].mMatrix
     );
 
     inputTriangles[1].mMatrix = mat4.create();
-
-    var squareCenter = vec3.fromValues(.25, .25, 0);
+    // Move square center to origin
+    var squareCenter = vec3.fromValues(0.25, 0.25, 0);
 
     mat4.fromTranslation(
         inputTriangles[1].mMatrix,
-        vec3.negate(vec3.create(), squareCenter)
+        vec3.fromValues(-0.25, -0.25, 0)
     );
-
+    // Rotate 45 degrees counter-clockwise
     mat4.multiply(
         inputTriangles[1].mMatrix,
         mat4.fromRotation(
@@ -221,7 +238,7 @@ function renderTriangles() {
         ),
         inputTriangles[1].mMatrix
     );
-
+    // Move diamond to final position
     mat4.multiply(
         inputTriangles[1].mMatrix,
         mat4.fromTranslation(
@@ -230,21 +247,17 @@ function renderTriangles() {
         ),
         inputTriangles[1].mMatrix
     );
+    for (var whichTriSet = 0;whichTriSet < numTriangleSets;whichTriSet++) {
 
-    for (var whichTriSet = 0;
-         whichTriSet < numTriangleSets;
-         whichTriSet++) {
         gl.uniformMatrix4fv(
             modelMatrixULoc,
             false,
             inputTriangles[whichTriSet].mMatrix
         );
-
         gl.bindBuffer(
             gl.ARRAY_BUFFER,
             vertexBuffers[whichTriSet]
         );
-
         gl.vertexAttribPointer(
             vertexPositionAttrib,
             3,
@@ -253,20 +266,18 @@ function renderTriangles() {
             0,
             0
         );
-
         gl.bindBuffer(
             gl.ELEMENT_ARRAY_BUFFER,
             triangleBuffers[whichTriSet]
         );
-
         gl.drawElements(
             gl.TRIANGLES,
             3 * triSetSizes[whichTriSet],
             gl.UNSIGNED_SHORT,
             0
         );
-    } 
-} 
+    }
+}
 
 /* MAIN -- HERE is where execution begins after window load */
 
