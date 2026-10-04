@@ -194,7 +194,7 @@ function renderTriangles() {
         inputTriangles[0].mMatrix,
         mat4.fromRotation(
             mat4.create(),
-            -Math.PI / 2,
+            3 * Math.PI / 4,
             vec3.fromValues(0, 0, 1)
         ),
         inputTriangles[0].mMatrix
