@@ -178,12 +178,20 @@ function setupShaders() {
 
 // render the loaded model
 function renderTriangles() {
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); // clear frame/depth buffers
-    
-    // define the modeling matrix for the first set 
-    inputTriangles[0].mMatrix = mat4.create(); // modeling mat for tri set
-    var setCenter = vec3.fromValues(.25,.75,0);  // center coords of tri set 
-    mat4.fromTranslation(inputTriangles[0].mMatrix,vec3.negate(vec3.create(),setCenter)); // translate to origin
+
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    inputTriangles[0].mMatrix = mat4.create();
+
+    var triangleCenter = vec3.fromValues(0.25, 0.70, 0);
+
+    var triangleTarget = vec3.fromValues(0.1425, 0.3925, 0);
+
+    mat4.fromTranslation(
+        inputTriangles[0].mMatrix,
+        vec3.negate(vec3.create(), triangleCenter)
+    );
+
     mat4.multiply(
         inputTriangles[0].mMatrix,
         mat4.fromScaling(
@@ -193,7 +201,6 @@ function renderTriangles() {
         inputTriangles[0].mMatrix
     );
 
-    // Rotate 45 degrees clockwise
     mat4.multiply(
         inputTriangles[0].mMatrix,
         mat4.fromRotation(
@@ -204,7 +211,6 @@ function renderTriangles() {
         inputTriangles[0].mMatrix
     );
 
-    // Move triangle to target position
     mat4.multiply(
         inputTriangles[0].mMatrix,
         mat4.fromTranslation(
@@ -213,50 +219,73 @@ function renderTriangles() {
         ),
         inputTriangles[0].mMatrix
     );
-        
-    // define the modeling matrix for the second set
+
+
     inputTriangles[1].mMatrix = mat4.create();
 
-    var setCenter = vec3.fromValues(.25, .25, 0);
+    var squareCenter = vec3.fromValues(0.25, 0.25, 0);
+
+    var squareTarget = vec3.fromValues(0.375, 0.25, 0);
 
     mat4.fromTranslation(
         inputTriangles[1].mMatrix,
-        vec3.negate(vec3.create(), setCenter)
+        vec3.negate(vec3.create(), squareCenter)
+    );
+    mat4.multiply(
+        inputTriangles[1].mMatrix,
+        mat4.fromRotation(
+            mat4.create(),
+            Math.PI / 4,
+            vec3.fromValues(0, 0, 1)
+        ),
+        inputTriangles[1].mMatrix
+    );
+    mat4.multiply(
+        inputTriangles[1].mMatrix,
+        mat4.fromTranslation(
+            mat4.create(),
+            squareTarget
+        ),
+        inputTriangles[1].mMatrix
     );
 
-    // mat4.multiply(
-    //     inputTriangles[1].mMatrix,
-    //     mat4.fromRotation(
-    //         mat4.create(),
-    //         Math.PI / 4,
-    //         vec3.fromValues(0, 0, 1)
-    //     ),
-    //     inputTriangles[1].mMatrix
-    // );
+    for (var whichTriSet = 0;
+         whichTriSet < numTriangleSets;
+         whichTriSet++) {
 
-    // mat4.multiply(
-    //     inputTriangles[1].mMatrix,
-    //     mat4.fromTranslation(
-    //         mat4.create(),
-    //         vec3.fromValues(.375, .25, 0)
-    //     ),
-    //     inputTriangles[1].mMatrix
-    // );
-    
-    for (var whichTriSet=0; whichTriSet<numTriangleSets; whichTriSet++) { 
-        
-        // pass modeling matrix for set to shadeer
-        gl.uniformMatrix4fv(modelMatrixULoc, false, inputTriangles[whichTriSet].mMatrix);
+        gl.uniformMatrix4fv(
+            modelMatrixULoc,
+            false,
+            inputTriangles[whichTriSet].mMatrix
+        );
 
-        // vertex buffer: activate and feed into vertex shader
-        gl.bindBuffer(gl.ARRAY_BUFFER,vertexBuffers[whichTriSet]); // activate
-        gl.vertexAttribPointer(vertexPositionAttrib,3,gl.FLOAT,false,0,0); // feed
+        gl.bindBuffer(
+            gl.ARRAY_BUFFER,
+            vertexBuffers[whichTriSet]
+        );
 
-        // triangle buffer: activate and render
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,triangleBuffers[whichTriSet]); // activate
-        gl.drawElements(gl.TRIANGLES,3*triSetSizes[whichTriSet],gl.UNSIGNED_SHORT,0); // render
-    } // end for each tri set
-} // end render triangles
+        gl.vertexAttribPointer(
+            vertexPositionAttrib,
+            3,
+            gl.FLOAT,
+            false,
+            0,
+            0
+        );
+
+        gl.bindBuffer(
+            gl.ELEMENT_ARRAY_BUFFER,
+            triangleBuffers[whichTriSet]
+        );
+
+        gl.drawElements(
+            gl.TRIANGLES,
+            3 * triSetSizes[whichTriSet],
+            gl.UNSIGNED_SHORT,
+            0
+        );
+    }
+}
 
 
 /* MAIN -- HERE is where execution begins after window load */
