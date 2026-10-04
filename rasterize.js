@@ -183,17 +183,18 @@ function renderTriangles() {
 
     inputTriangles[0].mMatrix = mat4.create();
 
-    var triangleCenter = vec3.fromValues(0.25, 0.75, 0);
+    var setCenter = vec3.fromValues(.25, .75, 0);
 
     mat4.fromTranslation(
         inputTriangles[0].mMatrix,
-        vec3.negate(vec3.create(), triangleCenter)
+        vec3.negate(vec3.create(), setCenter)
     );
+
     mat4.multiply(
         inputTriangles[0].mMatrix,
         mat4.fromScaling(
             mat4.create(),
-            vec3.fromValues(0.5, 0.5, 1.0)
+            vec3.fromValues(.5, .5, 1)
         ),
         inputTriangles[0].mMatrix
     );
@@ -212,7 +213,7 @@ function renderTriangles() {
         inputTriangles[0].mMatrix,
         mat4.fromTranslation(
             mat4.create(),
-            vec3.fromValues(0.1425, 0.3925, 0)
+            vec3.fromValues(.1425, .3925, 0)
         ),
         inputTriangles[0].mMatrix
     );
@@ -220,12 +221,13 @@ function renderTriangles() {
 
     inputTriangles[1].mMatrix = mat4.create();
 
-    var squareCenter = vec3.fromValues(0.25, 0.25, 0);
+    var squareCenter = vec3.fromValues(.25, .25, 0);
 
     mat4.fromTranslation(
         inputTriangles[1].mMatrix,
         vec3.negate(vec3.create(), squareCenter)
     );
+
     mat4.multiply(
         inputTriangles[1].mMatrix,
         mat4.fromRotation(
@@ -235,12 +237,11 @@ function renderTriangles() {
         ),
         inputTriangles[1].mMatrix
     );
-
     mat4.multiply(
         inputTriangles[1].mMatrix,
         mat4.fromTranslation(
             mat4.create(),
-            vec3.fromValues(0.375, 0.25, 0)
+            vec3.fromValues(.375, .25, 0)
         ),
         inputTriangles[1].mMatrix
     );
